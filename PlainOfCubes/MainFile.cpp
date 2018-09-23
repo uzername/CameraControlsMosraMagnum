@@ -1,7 +1,11 @@
 #include "commonmagnumheader.h"
 #include "AllDrawables.h"
-#include "OrbitingCamera.h"
 #include "globalbeacon.h"
+#ifdef USEORBITINGCAMERA
+#include "OrbitingCamera.h"
+#else
+#include "BaseCamera.h"
+#endif
 namespace Magnum {
 	namespace Examples {
 
@@ -19,15 +23,21 @@ namespace Magnum {
 				delete _coloredShader;
 				delete _plainShader;
 
-				//delete greekCamera;
+#ifdef USEORBITINGCAMERA
 				delete myOrbitingCamera;
-				//	delete shared_ctx;
+#else
+				delete greekCamera;
+#endif
 			}
 		private:
 			void drawEvent() override;
 			void mousePressEvent(MouseEvent& event) override;
 			void mouseReleaseEvent(MouseEvent& event) override;
 			void mouseMoveEvent(MouseMoveEvent& event) override;
+			void mouseScrollEvent(MouseScrollEvent& event) override;
+
+			void keyPressEvent(KeyEvent& event) override;
+
 			void activateSceneGraph();
 			void addGridLinesToSceneGraph();
 			void removeAllObjectsFromSceneGraphCollection();
@@ -38,8 +48,11 @@ namespace Magnum {
 
 			Object3D *scene_cameraObject;
 			SceneGraph::Camera3D* scene_camera;
-			//BaseCamera* greekCamera;
+			#ifdef USEORBITINGCAMERA
 			OrbitingCamera* myOrbitingCamera;
+			#else
+			BaseCamera* greekCamera;
+			#endif
 			PlainDrawable* drawablePtrToGrid;
 			std::map<std::string, ColoredDrawable*> mirroredSceneGraphWithIDs;
 			std::map<std::string, PlainDrawable*> mirroredSceneGraphWireframeWithIDs;
@@ -69,7 +82,7 @@ namespace Magnum {
 			GL::DebugOutput::setEnabled(
 				GL::DebugOutput::Source::Api, GL::DebugOutput::Type::Other, { 131185 }, false);
 			activateSceneGraph();
-			AddItemsToSceneGraph();
+			
 		}
 
 		void PrimitivesExample::drawEvent() {
@@ -102,11 +115,74 @@ namespace Magnum {
 			int relativePositionX = relativePosition.x();
 			int relativePositionY = relativePosition.y();
 
-			//greekCamera->rotate(relativePositionX, relativePositionY);
+			
+#ifdef USEORBITINGCAMERA
 			myOrbitingCamera->rotateAndTranslateInSphere(relativePositionY, relativePositionX);
+#else
+			greekCamera->rotate(relativePositionX, relativePositionY);
+#endif
 
 			deltaX = eventData.x();
 			deltaY = eventData.y();
+			event.setAccepted();
+			redraw();
+		}
+
+		void PrimitivesExample::mouseScrollEvent(MouseScrollEvent & event) {
+			Vector2 eventdata = event.offset();
+			double mouseScroll = eventdata.y();
+			float scalingFactor = 0.15f;
+#ifdef USEORBITINGCAMERA
+			myOrbitingCamera->move(1.0f - (mouseScroll > 0 ? 1 / (1.0f - (float)scalingFactor) : (1.0f - (float)scalingFactor)));
+#else
+			greekCamera->move(1.0f - (mouseScroll > 0 ? 1 / (1.0f - (float)scalingFactor) : (1.0f - (float)scalingFactor)));
+#endif
+			event.setAccepted();
+			redraw();
+		}
+
+		void PrimitivesExample::keyPressEvent(KeyEvent & event)
+		{
+			Magnum::Platform::Sdl2Application::KeyEvent::Key in_key = event.key();
+			switch (in_key)
+			{
+
+			case Magnum::Platform::Sdl2Application::KeyEvent::Key::Up: {
+#ifdef USEORBITINGCAMERA
+				myOrbitingCamera->upDown(0.25f);
+#else
+				greekCamera->upDown(0.25f);
+#endif
+				break;
+			}
+			case Magnum::Platform::Sdl2Application::KeyEvent::Key::Down: {
+#ifdef USEORBITINGCAMERA
+				myOrbitingCamera->upDown(-0.25f);
+#else
+				greekCamera->upDown(-0.25f);
+#endif
+				break;
+			}
+			case Magnum::Platform::Sdl2Application::KeyEvent::Key::Left: {
+#ifdef USEORBITINGCAMERA
+				myOrbitingCamera->strafe(-0.5f);
+#else
+				greekCamera->strafe(-0.5f);
+#endif
+				break;
+			}
+			case Magnum::Platform::Sdl2Application::KeyEvent::Key::Right: {
+#ifdef USEORBITINGCAMERA
+				myOrbitingCamera->strafe(0.5f);
+#else
+				greekCamera->strafe(0.5f);
+#endif
+				break;
+			}
+
+			default:
+				break;
+			}
 			event.setAccepted();
 			redraw();
 		}
@@ -138,7 +214,7 @@ namespace Magnum {
 			scene_o = new Object3D{ scene_scene };
 
 			addGridLinesToSceneGraph();
-
+			AddItemsToSceneGraph();
 		}
 
 

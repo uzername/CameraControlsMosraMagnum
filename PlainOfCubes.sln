@@ -5,6 +5,11 @@ VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PlainOfCubes", "PlainOfCubes\PlainOfCubes.vcxproj", "{3668C16C-8F55-47C1-8453-EFA3D538D27B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F5934BDF-E628-4A2E-9667-FEC2327FBE4A}"
+	ProjectSection(SolutionItems) = preProject
+		uzername.rst = uzername.rst
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

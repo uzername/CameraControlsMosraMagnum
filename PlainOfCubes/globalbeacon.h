@@ -18,6 +18,6 @@ enum SomeName_HowTheCameraShouldMoveAround {
 #endif 
 #endif  // _DEBUG  
 
-
+#define USEORBITINGCAMERA
 
 #endif

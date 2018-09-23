@@ -128,11 +128,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AllDrawables.cpp" />
+    <ClCompile Include="BaseCamera.cpp" />
     <ClCompile Include="MainFile.cpp" />
     <ClCompile Include="OrbitingCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AllDrawables.h" />
+    <ClInclude Include="BaseCamera.h" />
     <ClInclude Include="commonmagnumheader.h" />
     <ClInclude Include="globalbeacon.h" />
     <ClInclude Include="OrbitingCamera.h" />
