@@ -7,6 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PlainOfCubes", "PlainOfCube
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F5934BDF-E628-4A2E-9667-FEC2327FBE4A}"
 	ProjectSection(SolutionItems) = preProject
+		different-cameras.rst = different-cameras.rst
 		uzername.rst = uzername.rst
 	EndProjectSection
 EndProject
